@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Uptime</title>
+</head>
+<body>
+    <h1>System Uptime</h1>
+    <div id="uptime"></div>
+
+    <script>
+        const os = require('os');
+        // Function to format uptime
+        function formatUptime() {
+            const uptimeInSeconds = os.uptime();
+            const days = Math.floor(uptimeInSeconds / (24 * 3600));
+            const hours = Math.floor((uptimeInSeconds % (24 * 3600)) / 3600);
+            const minutes = Math.floor((uptimeInSeconds % 3600) / 60);
+            document.getElementById('uptime').innerHTML = `System Uptime: ${days} days, ${hours} hours, ${minutes} minutes`;
+        }
+        // Get system uptime in seconds
+        setInterval(formatUptime, 2000)
+        formatUptime();
+        // Log the formatted uptime
+    </script>
+</body>
+</html>

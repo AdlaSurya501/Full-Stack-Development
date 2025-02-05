@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="myChart" width="400" height="200"></canvas>
+    <canvas id="myChart1" width="400" height="200"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script >
+        function filefetch() {
+            let file = "fetch_info.txt"
+            fetch (file)
+            .then(response => 
+                {
+                    if(!response.ok){
+                        throw new Error("Network response was not ok")
+                    }
+                    return response.json()
+                }
+            )
+            .then(y => console.log(y))
+            .catch(error => {
+                console.error("There was a problem with the fetch operation : ",error)
+            });
+        }
+        function wheatherfetch() {
+            const api="https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=bc06bb050e908058f4297e640b800b3e"
+            fetch(api)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('City not found');
+                    }
+                    return response.json();
+                })
+                .then( data => console.log(data))
+                .catch( error => { 
+                    console.error("There was a problem with the fetch operation : ",error) 
+                });
+        }
+        // wheatherfetch()
+        async function wheather() {
+            const api="https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=bc06bb050e908058f4297e640b800b3e"
+            let response = await fetch(api)
+            // setTimeout(wheatherfetch(),2000)
+            let data = await response.json()
+            console.log(data)
+            console.log("Temperature :",data.main.temp)
+            console.log("Max Temp :",data.main.temp_max)
+            console.log("Min Temperature :",data.main.temp_max)
+        }
+        wheather()
+        async function tempWheather() {
+            const api="https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=bc06bb050e908058f4297e640b800b3e"
+            let response = await fetch(api)
+            let data = await response.json()
+            console.log(data)
+            console.log(data.main)
+
+            const cfg = {
+                type: 'doughnut', // Specify the type as doughnut
+                data: {
+                    labels: ['Temperature (K)', 'Feels Like (K)', 'Min Temperature (K)', 'Max Temperature (K)'], // Labels for the chart
+                    datasets: [{
+                        label: 'Weather Data',
+                        data: [
+                            data.main.temp,
+                            data.main.feels_like,
+                            data.main.temp_min,
+                            data.main.temp_max
+                        ], // Data points from the weather data
+                    }]
+                }
+            }
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, cfg);
+
+            const cfg1 = {
+                type: 'line', // Specify the type as doughnut
+                data: {
+                    labels: ['Temperature (K)', 'Feels Like (K)', 'Min Temperature (K)', 'Max Temperature (K)'], // Labels for the chart
+                    datasets: [{
+                        label: 'Weather Data',
+                        data: [
+                            data.main.temp,
+                            data.main.feels_like,
+                            data.main.temp_min,
+                            data.main.temp_max
+                        ], // Data points from the weather data
+                    }]
+                }
+            }
+            const ctx1 = document.getElementById('myChart1').getContext('2d');
+            new Chart(ctx1, cfg1);
+
+        }
+        tempWheather()
+    </script>
+    <p id="demo"></p>
+</body>
+</html>

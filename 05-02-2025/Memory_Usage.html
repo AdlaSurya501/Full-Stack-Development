@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Memory Usage Tracker</title>
+    </head>
+    <body>
+        <h1>Memory Usage Tracker</h1>
+        <div id="memory">
+            <p id="total"></p>
+            <p id="usage"></p>
+            <p id="free"></p>
+        </div>
+
+        <script>
+            function updateMemoryInfo() {
+                const usedJSHeap = performance.memory.usedJSHeapSize; // In bytes
+                const totalJSHeap = performance.memory.totalJSHeapSize; // In bytes
+
+                // Calculate used and free memory
+                const freeMemory = totalJSHeap - usedJSHeap;
+                const freeMemoryPercentage = (freeMemory / totalJSHeap) * 100;
+
+                // Display memory information
+                document.getElementById('total').innerHTML = `Total Memory: ${(totalJSHeap/(1024*1024)).toFixed(2)} MB`;
+                document.getElementById('usage').innerHTML = `Used Memory: ${(usedJSHeap / (1024 * 1024)).toFixed(2)} MB`;
+                document.getElementById('free').innerHTML = `Remaining Free Memory: ${(freeMemoryPercentage).toFixed(2)} %`;
+            }
+            // Update memory info every 5 seconds
+            setInterval(updateMemoryInfo, 1000);
+            // Initial call to display memory info immediately
+            updateMemoryInfo();
+        </script>
+    </body>
+</html>
